@@ -1,0 +1,9 @@
+services:
+  api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+    volumes:
+      - ../api/src/legal-saas-api:/app/src:ro
+    ports:
+      - "8080:8080"
