@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using legal_saas_api.DTOs;
+using LegalSaaS.Api.DTOs;
 
-namespace legal_saas_api.Controllers;
+namespace LegalSaaS.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

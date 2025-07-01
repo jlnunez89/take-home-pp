@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using legal_saas_api.Data;
+using LegalSaaS.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

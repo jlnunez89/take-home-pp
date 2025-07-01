@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace legal_saas_api.DTOs;
+namespace LegalSaaS.Api.DTOs;
 
 public class CreateCustomerDto
 {

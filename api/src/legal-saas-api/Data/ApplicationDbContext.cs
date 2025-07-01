@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using legal_saas_api.Models;
+using LegalSaaS.Api.Models;
 
-namespace legal_saas_api.Data;
+namespace LegalSaaS.Api.Data;
 
 public class ApplicationDbContext : DbContext
 {

@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>legal_saas_api</RootNamespace>
+    <RootNamespace>LegalSaaS.Api</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace legal_saas_api.Models;
+namespace LegalSaaS.Api.Models;
 
 public class Customer
 {
