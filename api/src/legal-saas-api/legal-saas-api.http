@@ -15,7 +15,7 @@ Content-Type: application/json
 
 ### Set the authentication token from signup response
 
-@authToken = {{signup.response.body.token}}
+@token = {{signup.response.body.token}}
 
 ### Log in with the created user
 # @name login
@@ -29,11 +29,11 @@ Content-Type: application/json
 
 ### Set the authentication token from login response 
 
-@authToken = {{login.response.body.token}}
+@token = {{login.response.body.token}}
 
 ### Get current user information (requires Bearer token from login)
 GET {{baseUrl}}/api/auth/me
-Authorization: Bearer {{authToken}}
+Authorization: Bearer {{token}}
 
 ### Test with invalid credentials
 POST {{baseUrl}}/api/auth/login
@@ -44,9 +44,45 @@ Content-Type: application/json
   "password": "wrongpassword"
 }
 
-### Authentication Endpoints
+### Customer Endpoints
 
+### Get all customers
 GET {{baseUrl}}/api/customers
-Accept: application/json
+Authorization: Bearer {{token}}
 
-###
+### Create a new customer
+POST {{baseUrl}}/api/customers
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Acme Corporation",
+  "phone": "555-0123"
+}
+
+### Get a specific customer (replace 1 with actual customer ID)
+GET {{baseUrl}}/api/customers/1
+Authorization: Bearer {{token}}
+
+### Update a customer (replace 1 with actual customer ID)
+PUT {{baseUrl}}/api/customers/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Acme Corporation Updated",
+  "phone": "555-0124"
+}
+
+### Delete a customer (replace 1 with actual customer ID)
+DELETE {{baseUrl}}/api/customers/1
+Authorization: Bearer {{token}}
+
+### Test unauthorized access (without token)
+GET {{baseUrl}}/api/customers
+
+### Test with invalid customer ID
+GET {{baseUrl}}/api/customers/999999
+Authorization: Bearer {{token}}
+
+### 

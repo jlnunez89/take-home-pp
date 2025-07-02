@@ -1,17 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using LegalSaaS.Api.Models;
 using LegalSaaS.Api.Models.Requests;
+using LegalSaaS.Api.Domain.Interfaces;
 
 namespace LegalSaaS.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class CustomersController : ControllerBase
 {
+    private readonly ICustomerHandler _customerHandler;
     private readonly ILogger<CustomersController> _logger;
 
-    public CustomersController(ILogger<CustomersController> logger)
+    public CustomersController(ICustomerHandler customerHandler, ILogger<CustomersController> logger)
     {
+        _customerHandler = customerHandler;
         _logger = logger;
     }
 
@@ -22,9 +27,17 @@ public class CustomersController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
     {
-        // TODO: Implement customer retrieval logic
-        _logger.LogInformation("Getting all customers");
-        throw new NotImplementedException("GetCustomers endpoint not yet implemented");
+        try
+        {
+            _logger.LogInformation("Getting all customers");
+            var customers = await _customerHandler.GetAllAsync();
+            return Ok(customers);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting customers");
+            return StatusCode(500, new { message = "An error occurred while retrieving customers" });
+        }
     }
 
     /// <summary>
@@ -35,9 +48,17 @@ public class CustomersController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Customer>> CreateCustomer(CreateCustomerRequestPayload createCustomerDto)
     {
-        // TODO: Implement customer creation logic
-        _logger.LogInformation("Creating new customer with name: {Name}", createCustomerDto.Name);
-        throw new NotImplementedException("CreateCustomer endpoint not yet implemented");
+        try
+        {
+            _logger.LogInformation("Creating new customer with name: {Name}", createCustomerDto.Name);
+            var customer = await _customerHandler.CreateAsync(createCustomerDto);
+            return CreatedAtAction(nameof(GetCustomer), new { customerId = customer.Id }, customer);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error creating customer");
+            return StatusCode(500, new { message = "An error occurred while creating the customer" });
+        }
     }
 
     /// <summary>
@@ -48,9 +69,22 @@ public class CustomersController : ControllerBase
     [HttpGet("{customerId}")]
     public async Task<ActionResult<Customer>> GetCustomer(int customerId)
     {
-        // TODO: Implement customer retrieval by ID logic
-        _logger.LogInformation("Getting customer with ID: {CustomerId}", customerId);
-        throw new NotImplementedException("GetCustomer endpoint not yet implemented");
+        try
+        {
+            _logger.LogInformation("Getting customer with ID: {CustomerId}", customerId);
+            var customer = await _customerHandler.GetByIdAsync(customerId);
+            return Ok(customer);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            _logger.LogWarning("Customer not found: {Message}", ex.Message);
+            return NotFound(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting customer with ID: {CustomerId}", customerId);
+            return StatusCode(500, new { message = "An error occurred while retrieving the customer" });
+        }
     }
 
     /// <summary>
@@ -62,9 +96,22 @@ public class CustomersController : ControllerBase
     [HttpPut("{customerId}")]
     public async Task<ActionResult<Customer>> UpdateCustomer(int customerId, UpdateCustomerRequestPayload updateCustomerDto)
     {
-        // TODO: Implement customer update logic
-        _logger.LogInformation("Updating customer with ID: {CustomerId}", customerId);
-        throw new NotImplementedException("UpdateCustomer endpoint not yet implemented");
+        try
+        {
+            _logger.LogInformation("Updating customer with ID: {CustomerId}", customerId);
+            var customer = await _customerHandler.UpdateAsync(customerId, updateCustomerDto);
+            return Ok(customer);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            _logger.LogWarning("Customer not found: {Message}", ex.Message);
+            return NotFound(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error updating customer with ID: {CustomerId}", customerId);
+            return StatusCode(500, new { message = "An error occurred while updating the customer" });
+        }
     }
 
     /// <summary>
@@ -75,8 +122,21 @@ public class CustomersController : ControllerBase
     [HttpDelete("{customerId}")]
     public async Task<ActionResult> DeleteCustomer(int customerId)
     {
-        // TODO: Implement customer deletion logic
-        _logger.LogInformation("Deleting customer with ID: {CustomerId}", customerId);
-        throw new NotImplementedException("DeleteCustomer endpoint not yet implemented");
+        try
+        {
+            _logger.LogInformation("Deleting customer with ID: {CustomerId}", customerId);
+            await _customerHandler.DeleteAsync(customerId);
+            return NoContent();
+        }
+        catch (KeyNotFoundException ex)
+        {
+            _logger.LogWarning("Customer not found: {Message}", ex.Message);
+            return NotFound(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error deleting customer with ID: {CustomerId}", customerId);
+            return StatusCode(500, new { message = "An error occurred while deleting the customer" });
+        }
     }
 }
