@@ -1,6 +1,52 @@
-@LegalSaasApiHostAddress = http://localhost:8080
+@baseUrl = http://localhost:8080
 
-GET {{LegalSaasApiHostAddress}}/api/customers
+### Authentication Endpoints
+
+### Sign up a new user
+# @name signup
+POST {{baseUrl}}/api/auth/signup
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
+  "password": "password123",
+  "firmName": "Doe Legal Services"
+}
+
+### Set the authentication token from signup response
+
+@authToken = {{signup.response.body.token}}
+
+### Log in with the created user
+# @name login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+
+### Set the authentication token from login response 
+
+@authToken = {{login.response.body.token}}
+
+### Get current user information (requires Bearer token from login)
+GET {{baseUrl}}/api/auth/me
+Authorization: Bearer {{authToken}}
+
+### Test with invalid credentials
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
+  "password": "wrongpassword"
+}
+
+### Authentication Endpoints
+
+GET {{baseUrl}}/api/customers
 Accept: application/json
 
 ###

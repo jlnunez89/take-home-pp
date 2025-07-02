@@ -1,6 +1,6 @@
 namespace LegalSaaS.Api.Models;
 
-public class CustomerResponsePayload
+public class Customer
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;

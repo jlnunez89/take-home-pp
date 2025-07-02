@@ -1,13 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace LegalSaaS.Api.Models;
+namespace LegalSaaS.Api.Models.Requests;
 
-public class CreateCustomerRequestPayload
+public class UpdateCustomerRequestPayload
 {
     [Required]
     [StringLength(100)]
     public string Name { get; set; } = string.Empty;
-    
+
     [Required]
     [StringLength(20)]
     public string Phone { get; set; } = string.Empty;

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using LegalSaaS.Api.Models;
+using LegalSaaS.Api.Models.Requests;
 
 namespace LegalSaaS.Api.Controllers;
 
@@ -19,7 +20,7 @@ public class CustomersController : ControllerBase
     /// </summary>
     /// <returns>List of customers</returns>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<CustomerResponsePayload>>> GetCustomers()
+    public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
     {
         // TODO: Implement customer retrieval logic
         _logger.LogInformation("Getting all customers");
@@ -32,7 +33,7 @@ public class CustomersController : ControllerBase
     /// <param name="createCustomerDto">Customer data</param>
     /// <returns>Created customer</returns>
     [HttpPost]
-    public async Task<ActionResult<CustomerResponsePayload>> CreateCustomer(CreateCustomerRequestPayload createCustomerDto)
+    public async Task<ActionResult<Customer>> CreateCustomer(CreateCustomerRequestPayload createCustomerDto)
     {
         // TODO: Implement customer creation logic
         _logger.LogInformation("Creating new customer with name: {Name}", createCustomerDto.Name);
@@ -45,7 +46,7 @@ public class CustomersController : ControllerBase
     /// <param name="customerId">Customer ID</param>
     /// <returns>Customer details</returns>
     [HttpGet("{customerId}")]
-    public async Task<ActionResult<CustomerResponsePayload>> GetCustomer(int customerId)
+    public async Task<ActionResult<Customer>> GetCustomer(int customerId)
     {
         // TODO: Implement customer retrieval by ID logic
         _logger.LogInformation("Getting customer with ID: {CustomerId}", customerId);
@@ -59,7 +60,7 @@ public class CustomersController : ControllerBase
     /// <param name="updateCustomerDto">Updated customer data</param>
     /// <returns>Updated customer</returns>
     [HttpPut("{customerId}")]
-    public async Task<ActionResult<CustomerResponsePayload>> UpdateCustomer(int customerId, UpdateCustomerRequestPayload updateCustomerDto)
+    public async Task<ActionResult<Customer>> UpdateCustomer(int customerId, UpdateCustomerRequestPayload updateCustomerDto)
     {
         // TODO: Implement customer update logic
         _logger.LogInformation("Updating customer with ID: {CustomerId}", customerId);
