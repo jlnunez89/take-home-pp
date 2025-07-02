@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using LegalSaaS.Api.Data;
+using LegalSaaS.Api.Dal.Database;
+using LegalSaaS.Api.Dal.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,10 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+
+// Ensure database is created and migrated
+await app.MigrateDatabaseAsync();
+await app.SeedDatabaseAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

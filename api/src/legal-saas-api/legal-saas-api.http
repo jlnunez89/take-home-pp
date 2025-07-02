@@ -1,6 +1,6 @@
-@legal_saas_api_HostAddress = http://localhost:5223
+@LegalSaasApiHostAddress = http://localhost:8080
 
-GET {{legal_saas_api_HostAddress}}/weatherforecast/
+GET {{LegalSaasApiHostAddress}}/api/customers
 Accept: application/json
 
 ###

@@ -90,9 +90,49 @@ This is a Legal SaaS application for customer and matter management, built with 
 
 ## Database
 
-The application uses PostgreSQL with Entity Framework Core. The connection strings are configured in:
+The application uses PostgreSQL with Entity Framework Core and supports database migrations.
+
+### Database Setup
+- **Local Development**: Connection to localhost PostgreSQL (port 5432)
+- **Docker Development**: Connection to PostgreSQL container
+- **Auto-Migration**: Database is automatically created and migrated on application startup
+
+### Connection Strings
 - `appsettings.json` - For local development with localhost PostgreSQL
 - `appsettings.Development.json` - For Docker development with PostgreSQL container
+
+### Database Migrations
+
+The application automatically applies migrations on startup. For manual migration management:
+
+```bash
+# Navigate to API directory
+cd api/src/legal-saas-api
+
+# Create a new migration
+dotnet ef migrations add <MigrationName>
+
+# Apply migrations to database
+dotnet ef database update
+
+# List all migrations
+dotnet ef migrations list
+
+# Remove last migration (if not applied)
+dotnet ef migrations remove
+
+# Generate SQL script for migrations
+dotnet ef migrations script
+```
+
+### Database Schema
+
+**Customers Table:**
+- `Id` (Primary Key, Auto-increment)
+- `Name` (Required, Max 100 chars)
+- `Phone` (Required, Max 20 chars)
+- `CreatedAt` (Timestamp, Auto-generated)
+- `UpdatedAt` (Timestamp, Auto-updated)
 
 ## API Documentation
 
