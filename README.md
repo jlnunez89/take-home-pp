@@ -1,169 +1,201 @@
-# take-home-pp
-Legal SaaS Customer & Matter Management
+# Legal SaaS Application
+
+Customer & Matter Management System
 
 ## Overview
 
-This is a Legal SaaS application for customer and matter management, built with .NET 8 and PostgreSQL.
+A complete Legal SaaS application featuring customer and matter management with modern web technologies. Built with .NET 8 backend API, React frontend, and PostgreSQL database, fully containerized with Docker.
+
+## Architecture
+
+- **Backend API**: .NET 8 with Entity Framework Core, JWT authentication
+- **Frontend**: React + TypeScript + TailwindCSS + ShadcnUI
+- **Database**: PostgreSQL 15
+- **Containerization**: Docker & Docker Compose
 
 ## Project Structure
 
 ```
 ├── api/
 │   └── src/
-│       └── legal-saas-api/      # .NET 8 Web API
+│       └── legal-saas-api/      # .NET 8 Web API with JWT auth
 ├── web/
-│   └── src/                     # Frontend (TBD)
+│   └── src/                     # React + TypeScript frontend
 ├── compose/
-│   ├── docker-compose.yml       # Docker services configuration
+│   ├── docker-compose.yml       # Full stack orchestration
 │   └── docker-compose.override.yml
-└── README.md
+├── DOCKER_README.md             # Detailed containerization guide
+└── README.md                    # This file
 ```
-
-## Features
-
-### Customer Management API
-- **GET** `/api/customers` - Retrieve a list of customers
-- **POST** `/api/customers` - Create a new customer (name, phone)
-- **GET** `/api/customers/{customer_id}` - Retrieve details of a customer
-- **PUT** `/api/customers/{customer_id}` - Update a customer
-- **DELETE** `/api/customers/{customer_id}` - Delete a customer
-
-## Technology Stack
-
-- **.NET 8** - Web API framework
-- **PostgreSQL 15** - Database
-- **Entity Framework Core** - ORM
-- **Docker & Docker Compose** - Containerization
-- **Swagger/OpenAPI** - API documentation
 
 ## Prerequisites
 
-- Docker and Docker Compose
-- .NET 8 SDK (for local development)
+- **Docker & Docker Compose** (cross-platform: Windows, Mac, Linux)
+- **Git** (to clone the repository)
+
+_No need to install .NET, Node.js, or PostgreSQL - everything runs in containers!_
 
 ## Quick Start
 
-### Using Docker Compose (Recommended)
+1. **Clone and run**
 
-1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd take-home-pp
+   cd take-home-pp/compose
+   docker-compose up -d
    ```
 
-2. **Start the services**
-   
-   On Linux/Mac:
+2. **Access the application**
+
+   - **Frontend**: http://localhost:3000 (React app)
+   - **API**: http://localhost:8080 (REST API)
+   - **API Docs**: http://localhost:8080/swagger (Interactive docs)
+   - **Database**: localhost:5432 (postgres/postgres)
+
+3. **Stop the application**
    ```bash
-   ./run.sh
-   ```
-   
-   On Windows (PowerShell):
-   ```powershell
-   .\run.ps1
-   ```
-   
-   Or manually:
-   ```bash
-   cd compose
-   docker-compose up --build -d
+   docker-compose down
    ```
 
-3. **Access the API**
-   - API: http://localhost:8080
-   - Swagger UI: http://localhost:8080/swagger
+## Features
 
-### Local Development
+### 🔐 Authentication
 
-1. **Start PostgreSQL**
-   ```bash
-   cd compose
-   docker-compose up postgres -d
-   ```
+- User registration with firm name
+- JWT-based secure login/logout
+- Protected routes and API endpoints
 
-2. **Run the API locally**
-   ```bash
-   cd api/src/legal-saas-api
-   dotnet restore
-   dotnet run
-   ```
+### 👥 Customer Management
 
-## Database
+- Create, view, update, and delete customers
+- Phone number validation with real-time formatting
+- Search and data validation
 
-The application uses PostgreSQL with Entity Framework Core and supports database migrations.
+### 📋 Matter Management
 
-### Database Setup
-- **Local Development**: Connection to localhost PostgreSQL (port 5432)
-- **Docker Development**: Connection to PostgreSQL container
-- **Auto-Migration**: Database is automatically created and migrated on application startup
+- Create and view legal matters
+- Associate matters with customers
+- Status tracking and management
 
-### Connection Strings
-- `appsettings.json` - For local development with localhost PostgreSQL
-- `appsettings.Development.json` - For Docker development with PostgreSQL container
+### 🎨 Modern UI/UX
 
-### Database Migrations
+- Professional, responsive design
+- Real-time form validation with error feedback
+- Loading states and smooth interactions
+- Mobile-friendly interface
 
-The application automatically applies migrations on startup. For manual migration management:
+## Technology Stack
+
+### Backend (.NET 8 API)
+
+- **Framework**: ASP.NET Core 8
+- **Database**: Entity Framework Core with PostgreSQL
+- **Authentication**: JWT tokens with secure validation
+- **Documentation**: Swagger/OpenAPI with interactive UI
+- **Validation**: Custom phone number validation, data annotations
+
+### Frontend (React)
+
+- **Framework**: React 19 with TypeScript
+- **Styling**: TailwindCSS + ShadcnUI components
+- **State Management**: React Context for authentication
+- **HTTP Client**: Fetch API with JWT token handling
+- **Form Validation**: Real-time validation with error display
+
+### Database
+
+- **Engine**: PostgreSQL 15
+- **Migrations**: Automatic Entity Framework migrations
+- **Schema**: Users, Customers, and Matters with relationships
+- **Health Checks**: Container health monitoring
+
+### DevOps
+
+- **Containerization**: Multi-stage Docker builds
+- **Orchestration**: Docker Compose with service dependencies
+- **Proxy**: Nginx reverse proxy for API requests
+- **Environment**: Separate configs for development/production
+
+## Development
+
+### Local Development (Without Docker)
 
 ```bash
-# Navigate to API directory
+# Start PostgreSQL only
+cd compose && docker-compose up postgres -d
+
+# Run API locally
 cd api/src/legal-saas-api
+dotnet restore && dotnet run
 
-# Create a new migration
-dotnet ef migrations add <MigrationName>
-
-# Apply migrations to database
-dotnet ef database update
-
-# List all migrations
-dotnet ef migrations list
-
-# Remove last migration (if not applied)
-dotnet ef migrations remove
-
-# Generate SQL script for migrations
-dotnet ef migrations script
+# Run frontend locally
+cd web
+npm install && npm start
 ```
 
-### Database Schema
-
-**Customers Table:**
-- `Id` (Primary Key, Auto-increment)
-- `Name` (Required, Max 100 chars)
-- `Phone` (Required, Max 20 chars)
-- `CreatedAt` (Timestamp, Auto-generated)
-- `UpdatedAt` (Timestamp, Auto-updated)
-
-## API Documentation
-
-Once the application is running, you can access:
-- **Swagger UI**: http://localhost:8080/swagger
-- **OpenAPI Spec**: http://localhost:8080/swagger/v1/swagger.json
-
-## Docker Services
-
-- **postgres**: PostgreSQL 15 database
-  - Port: 5432
-  - Database: `legal_saas_db`
-  - Username: `postgres`
-  - Password: `postgres`
-
-- **api**: .NET 8 Web API
-  - Port: 8080
-  - Environment: Development
-
-## Development Commands
+### Container Development (Recommended)
 
 ```bash
+# Build and run everything
+docker-compose up --build
+
 # View logs
-docker-compose -f compose/docker-compose.yml logs -f
+docker-compose logs -f [service-name]
 
-# Stop services
-docker-compose -f compose/docker-compose.yml down
-
-# Rebuild and restart
-docker-compose -f compose/docker-compose.yml up --build
-
-# Run only database
-docker-compose -f compose/docker-compose.yml up postgres -d
+# Rebuild specific service
+docker-compose build [api|webapp|postgres]
 ```
+
+For detailed containerization information, see [DOCKER_README.md](DOCKER_README.md).
+
+## API Endpoints
+
+### Authentication
+
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+
+### Customers
+
+- `GET /api/customers` - List customers
+- `POST /api/customers` - Create customer
+- `GET /api/customers/{id}` - Get customer details
+- `PUT /api/customers/{id}` - Update customer
+- `DELETE /api/customers/{id}` - Delete customer
+
+### Matters
+
+- `GET /api/matters` - List matters
+- `POST /api/matters` - Create matter
+- `GET /api/matters/{id}` - Get matter details
+
+## Database Schema
+
+- **Users**: `Id`, `Email`, `PasswordHash`, `FirmName`, `CreatedAt`
+- **Customers**: `Id`, `Name`, `Phone`, `CreatedAt`, `UpdatedAt`
+- **Matters**: `Id`, `CustomerId`, `Title`, `Description`, `Status`, `CreatedAt`
+
+## Security Features
+
+- JWT token-based authentication
+- Password hashing with secure algorithms
+- Input validation and sanitization
+- CORS protection
+- SQL injection prevention via Entity Framework
+- Phone number format validation (backend + frontend)
+
+## Cross-Platform Compatibility
+
+✅ **Windows**: Docker Desktop + PowerShell/CMD  
+✅ **macOS**: Docker Desktop + Terminal  
+✅ **Linux**: Docker Engine + Bash
+
+The entire application runs in containers, ensuring consistent behavior across all platforms.
+
+## Troubleshooting
+
+**Port conflicts**: Ensure ports 3000, 8080, 5432 are available  
+**Container issues**: Run `docker-compose down -v && docker-compose up -d`  
+**Database connection**: Wait for PostgreSQL health check to pass
+
+For detailed troubleshooting, see [DOCKER_README.md](DOCKER_README.md).
