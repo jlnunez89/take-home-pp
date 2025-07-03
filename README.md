@@ -92,3 +92,12 @@ npm install && npm start
 **Port conflicts**: Ensure ports 3000 (webapp), 8080 (api), 5432 (database) are available.
 **Container issues**: Run `docker-compose down -v && docker-compose up -d`
 **Database connection**: Wait for PostgreSQL health check to pass
+
+## Future Improvements
+
+1. **Logging**: Implement structured logging (Serilog, application insights).
+2. **Monitoring**: Add health check endpoints, metrics collection.
+3. **Automated Testing**: Add unit tests, integration tests, E2E tests.
+4. **Static Analysis**: Code Coverage numbers, scan for vulnerabilities, suggest best pratices.
+5. **CI/CD Pipeline**: GitHub Actions or similar for automated builds.
+6. **Database Indexing**: Performance optimization for larger datasets.
