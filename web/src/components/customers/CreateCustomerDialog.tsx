@@ -30,15 +30,54 @@ export const CreateCustomerDialog: React.FC<CreateCustomerDialogProps> = ({
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
+
+  const validatePhone = (phone: string): boolean => {
+    // Remove all non-digit characters for validation
+    const cleanPhone = phone.replace(/\D/g, '');
+    
+    // Check if it's a valid US phone number (10 digits) or international format
+    if (cleanPhone.length === 10) {
+      return /^[2-9]\d{2}[2-9]\d{6}$/.test(cleanPhone);
+    } else if (cleanPhone.length === 11 && cleanPhone.startsWith('1')) {
+      return /^1[2-9]\d{2}[2-9]\d{6}$/.test(cleanPhone);
+    }
+    
+    // Allow international numbers (8-15 digits)
+    return cleanPhone.length >= 8 && cleanPhone.length <= 15;
+  };
+
+  const formatPhone = (phone: string): string => {
+    const cleanPhone = phone.replace(/\D/g, '');
+    
+    if (cleanPhone.length <= 3) {
+      return cleanPhone;
+    } else if (cleanPhone.length <= 6) {
+      return `(${cleanPhone.slice(0, 3)}) ${cleanPhone.slice(3)}`;
+    } else if (cleanPhone.length <= 10) {
+      return `(${cleanPhone.slice(0, 3)}) ${cleanPhone.slice(3, 6)}-${cleanPhone.slice(6)}`;
+    } else {
+      return `+${cleanPhone.slice(0, 1)} (${cleanPhone.slice(1, 4)}) ${cleanPhone.slice(4, 7)}-${cleanPhone.slice(7, 11)}`;
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
+    setPhoneError('');
+
+    // Validate phone number
+    if (!validatePhone(formData.phone)) {
+      setPhoneError('Please enter a valid phone number');
+      setIsLoading(false);
+      return;
+    }
 
     try {
       await apiClient.createCustomer(formData);
       setFormData({ name: '', phone: '' });
+      setPhoneError('');
       onCustomerCreated();
       onOpenChange(false);
     } catch (err) {
@@ -51,7 +90,20 @@ export const CreateCustomerDialog: React.FC<CreateCustomerDialogProps> = ({
   const handleInputChange = (field: keyof CreateCustomerRequest) => (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setFormData(prev => ({ ...prev, [field]: e.target.value }));
+    const value = e.target.value;
+    
+    if (field === 'phone') {
+      // Format phone number as user types
+      const formattedPhone = formatPhone(value);
+      setFormData(prev => ({ ...prev, [field]: formattedPhone }));
+      
+      // Clear phone error when user starts typing
+      if (phoneError) {
+        setPhoneError('');
+      }
+    } else {
+      setFormData(prev => ({ ...prev, [field]: value }));
+    }
   };
 
   return (
@@ -89,10 +141,17 @@ export const CreateCustomerDialog: React.FC<CreateCustomerDialogProps> = ({
               id="phone"
               value={formData.phone}
               onChange={handleInputChange('phone')}
-              placeholder="Enter phone number"
+              placeholder="(555) 123-4567"
               required
               disabled={isLoading}
+              className={phoneError ? 'border-destructive' : ''}
             />
+            {phoneError && (
+              <p className="text-sm text-destructive">{phoneError}</p>
+            )}
+            <p className="text-xs text-muted-foreground">
+              Enter a valid US or international phone number
+            </p>
           </div>
           
           <DialogFooter>
