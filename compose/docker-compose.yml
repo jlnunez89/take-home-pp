@@ -35,6 +35,21 @@ services:
       - legal-saas-network
     restart: unless-stopped
 
+  webapp:
+    build:
+      context: ../
+      dockerfile: web/Dockerfile
+    container_name: legal-saas-webapp
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+    networks:
+      - legal-saas-network
+    restart: unless-stopped
+
 volumes:
   postgres_data:
 
