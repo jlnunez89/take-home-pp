@@ -21,11 +21,9 @@ A complete Legal SaaS application featuring customer and matter management with 
 │       └── legal-saas-api/      # .NET 8 Web API with JWT auth
 ├── web/
 │   └── src/                     # React + TypeScript frontend
-├── compose/
-│   ├── docker-compose.yml       # Full stack orchestration
-│   └── docker-compose.override.yml
-├── DOCKER_README.md             # Detailed containerization guide
-└── README.md                    # This file
+└── compose/
+    ├── docker-compose.yml       # Full stack orchestration
+    └── docker-compose.override.yml
 ```
 
 ## Prerequisites
