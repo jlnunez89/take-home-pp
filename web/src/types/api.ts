@@ -1,7 +1,6 @@
 export interface User {
   id: number;
   email: string;
-  name: string;
 }
 
 export interface Customer {
@@ -31,6 +30,7 @@ export interface SignupRequest {
   email: string;
   password: string;
   name: string;
+  firmName: string;
 }
 
 export interface CreateCustomerRequest {

@@ -138,6 +138,9 @@ export const MatterList: React.FC<MatterListProps> = ({
                         <p className="text-xs text-muted-foreground mt-2">
                           Created: {formatDate(matter.createdAt)}
                         </p>
+                        <p className="text-xs text-muted-foreground">
+                          Last Updated: {formatDate(matter.updatedAt)}
+                        </p>
                       </div>
                     </div>
                     <Badge 

@@ -13,6 +13,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onToggleMode }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [firmName, setFirmName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const { signup } = useAuth();
@@ -23,7 +24,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onToggleMode }) => {
     setError('');
 
     try {
-      await signup(email, password, name);
+      await signup(email, password, name, firmName);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Signup failed');
     } finally {
@@ -66,6 +67,18 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onToggleMode }) => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={isLoading}
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="firmName">Firm Name</Label>
+            <Input
+              id="firmName"
+              type="text"
+              value={firmName}
+              onChange={(e) => setFirmName(e.target.value)}
               required
               disabled={isLoading}
             />
