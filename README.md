@@ -89,9 +89,9 @@ npm install && npm start
 
 ## Troubleshooting
 
-**Port conflicts**: Ensure ports 3000 (webapp), 8080 (api), 5432 (database) are available.
-**Container issues**: Run `docker-compose down -v && docker-compose up -d`
-**Database connection**: Wait for PostgreSQL health check to pass
+- **Port conflicts**: Ensure ports 3000 (webapp), 8080 (api), 5432 (database) are available.
+- **Container issues**: Run `docker-compose down -v && docker-compose up -d`
+- **Database connection**: Wait for PostgreSQL health check to pass
 
 ## Future Improvements
 
