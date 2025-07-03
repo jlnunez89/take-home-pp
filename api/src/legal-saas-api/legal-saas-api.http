@@ -85,4 +85,43 @@ GET {{baseUrl}}/api/customers
 GET {{baseUrl}}/api/customers/999999
 Authorization: Bearer {{token}}
 
-### 
+### Get all matters for a customer
+GET {{baseUrl}}/api/customers/1/matters
+Authorization: Bearer {{token}}
+
+### Create a new matter for a customer
+POST {{baseUrl}}/api/customers/1/matters
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Personal Injury Case - Smith vs. XYZ Corp",
+  "description": "Client sustained injuries in workplace accident. Seeking compensation for medical expenses and lost wages.",
+  "status": "Open"
+}
+
+### Get a specific matter (replace 1 with actual matter ID)
+GET {{baseUrl}}/api/customers/1/matters/1
+Authorization: Bearer {{token}}
+
+### Create another matter example
+POST {{baseUrl}}/api/customers/1/matters
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Contract Review - Employment Agreement",
+  "description": "Review and negotiate terms of executive employment contract.",
+  "status": "In Progress"
+}
+
+### Test with non-existent customer
+GET {{baseUrl}}/api/customers/999999/matters
+Authorization: Bearer {{token}}
+
+### Test with non-existent matter
+GET {{baseUrl}}/api/customers/1/matters/999999
+Authorization: Bearer {{token}}
+
+### Test unauthorized access (without token)
+GET {{baseUrl}}/api/customers/1/matters

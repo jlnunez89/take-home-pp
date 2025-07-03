@@ -11,6 +11,7 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Customer> Customers { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<Matter> Matters { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -41,6 +42,29 @@ public class ApplicationDbContext : DbContext
 
             // Create unique index on email
             entity.HasIndex(e => e.Email).IsUnique();
+
+            // Configure timestamps with proper PostgreSQL defaults
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP AT TIME ZONE 'UTC'")
+                .ValueGeneratedOnAdd();
+
+            entity.Property(e => e.UpdatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP AT TIME ZONE 'UTC'")
+                .ValueGeneratedOnAddOrUpdate();
+        });
+
+        modelBuilder.Entity<Matter>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Title).IsRequired().HasMaxLength(200);
+            entity.Property(e => e.Description).HasMaxLength(1000);
+            entity.Property(e => e.Status).IsRequired().HasMaxLength(50);
+
+            // Configure foreign key relationship
+            entity.HasOne(e => e.Customer)
+                .WithMany(c => c.Matters)
+                .HasForeignKey(e => e.CustomerId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Configure timestamps with proper PostgreSQL defaults
             entity.Property(e => e.CreatedAt)
